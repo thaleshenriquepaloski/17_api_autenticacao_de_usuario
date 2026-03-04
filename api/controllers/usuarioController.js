@@ -32,6 +32,19 @@ class UsuarioController {
             return res.status(400).json({ message: error.message });
         }
     }
+
+    static editarUsuario = async (req, res) => {
+        try {
+            const dto = { 
+                id: req.params.id,
+                ...req.body
+             }
+            const usuarioAtualizado = await usuarioService.editarUsuario(dto);
+            return res.status(201).json(usuarioAtualizado);
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
     // finalizar com buscar todos os usuarios; buscar usuario por id; editar usuário ; deletar usuário 
 }
 

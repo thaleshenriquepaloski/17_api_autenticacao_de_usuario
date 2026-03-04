@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres-container
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: seguranca_nodejs_development
+    ports:
+      - "5433:5432" # MÁGICA AQUI: Usamos a 5433 no seu PC para nunca mais dar erro com a 5432 local!
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

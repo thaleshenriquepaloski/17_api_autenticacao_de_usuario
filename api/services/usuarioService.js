@@ -33,11 +33,26 @@ class UsuarioService {
     };
 
     buscarTodosUsuarios = async () => {
-        return database.usuarios.findAll();
+        return database.usuarios.findAll({
+            include: [
+                {
+                    model: database.roles,
+                    as: 'roles_do_usuario',
+                    attributes: [ 'id', 'nome', 'descricao' ]
+                }
+            ]
+        });
     };
 
     buscarUsuarioPorId = async (id) => {
         const usuario = await database.usuarios.findOne({
+            include: [
+                {
+                    model: database.roles,
+                    as: 'roles_do_usuario',
+                    attributes: [ 'id', 'nome', 'descricao' ]
+                },
+            ],
             where: {
                 id: id
             }
@@ -48,11 +63,16 @@ class UsuarioService {
 
     editarUsuario = async (dto) => {
         const usuario  = await this.buscarUsuarioPorId(dto.id);
+        if(!usuario) throw new Error('Usuário não encontrado');
         try {
-            usuario.nome = dto.nome;
-            usuario.email = dto.email;
+            if(usuario.nome !== undefined) {
+                usuario.nome = dto.nome;
+            }
+            if(usuario.email !== undefined){
+                usuario.email = dto.email;
+            }
             await usuario.save();
-            return usuario;
+            return usuario; 
         } catch (error) {
             throw new Error('Erro ao editar usuário!');
         }

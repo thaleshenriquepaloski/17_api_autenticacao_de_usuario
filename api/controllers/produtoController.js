@@ -8,7 +8,7 @@ class ProdutoController {
         try {
             const produto = await produtoService.cadastrarProduto({ nome, descricao, preco })
             
-            res.status(201).json(produto)
+            return res.status(201).json(produto)
             
         } catch (error) {
             console.log('Message error: ', error.message)
