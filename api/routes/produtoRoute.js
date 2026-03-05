@@ -1,18 +1,16 @@
 const { Router } = require('express')
 const ProdutoController = require('../controllers/produtoController')
-const verificaRolesDoPerfil = require('../middleware/verificaPerfilUsuario')
-const verificarPermissaoDoUsuario = require('../middleware/verificarPermissoesDeUsuario')
+const verificaSeRoleTemPermissao = require('../middleware/verificarRoleTemPermissao')
 
 const router = Router()
 
 router
   .post(
     '/produto',
-    verificarPermissaoDoUsuario(["criar", "deletar", "editar"]),
+    verificaSeRoleTemPermissao(["cadastrar"]),
     ProdutoController.cadastrarProduto
   )
   .get('/produto', //somente estoquista pode listar todos os produtos
-    verificarPermissaoDoUsuario(['listar']),
     ProdutoController.buscarTodosProdutos
   )
   .get('/produto/id/:id', ProdutoController.buscarProdutoPorId)
